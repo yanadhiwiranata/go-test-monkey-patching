@@ -30,10 +30,9 @@ func TestMockGetId(t *testing.T) {
 	var patch *mpatch.Patch
 	var err error
 	patch, err = mpatch.PatchInstanceMethodByName(reflect.TypeOf(human), "GetId", func(m *_human.Human) int {
-		patch.Unpatch()
-		defer patch.Patch()
 		return 2
 	})
+	defer patch.Unpatch()
 	assert.Equal(t, 2, human.GetId())
 	assert.NoError(t, err)
 }
@@ -43,10 +42,10 @@ func TestMockGetIDAndName(t *testing.T) {
 	var patch *mpatch.Patch
 	var err error
 	patch, err = mpatch.PatchInstanceMethodByName(reflect.TypeOf(human), "GetIDAndName", func(m *_human.Human) string {
-		patch.Unpatch()
-		defer patch.Patch()
 		return "2adhi"
 	})
+
+	defer patch.Unpatch()
 	assert.Equal(t, "2adhi", human.GetIDAndName())
 	assert.NoError(t, err)
 }
@@ -56,10 +55,9 @@ func TestMockGoMonekyGetId(t *testing.T) {
 	var patch *mpatch.Patch
 	var err error
 	patch, err = mpatch.PatchInstanceMethodByName(reflect.TypeOf(human), "GetId", func(m *_human.Human) int {
-		patch.Unpatch()
-		defer patch.Patch()
 		return 2
 	})
+	defer patch.Unpatch()
 	assert.Equal(t, 2, human.GetId())
 	assert.NoError(t, err)
 }
