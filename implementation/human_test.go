@@ -4,6 +4,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/agiledragon/gomonkey/v2"
 	"github.com/stretchr/testify/assert"
 	"github.com/undefinedlabs/go-mpatch"
 	_human "github.com/yanadhiwiranata/go-test-monkey-patching/implementation"
@@ -48,4 +49,25 @@ func TestMockGetIDAndName(t *testing.T) {
 	})
 	assert.Equal(t, "2adhi", human.GetIDAndName())
 	assert.NoError(t, err)
+}
+
+func TestMockGoMonekyGetId(t *testing.T) {
+	human := _human.NewHuman(1, "yan")
+	var patch *mpatch.Patch
+	var err error
+	patch, err = mpatch.PatchInstanceMethodByName(reflect.TypeOf(human), "GetId", func(m *_human.Human) int {
+		patch.Unpatch()
+		defer patch.Patch()
+		return 2
+	})
+	assert.Equal(t, 2, human.GetId())
+	assert.NoError(t, err)
+}
+
+func TestMockGetID2(t *testing.T) {
+	human := _human.NewHuman(1, "yan")
+	gomonkey.ApplyMethod(reflect.TypeOf(human), "GetId", func(m *_human.Human) int {
+		return 2
+	})
+	assert.Equal(t, 2, human.GetId())
 }
